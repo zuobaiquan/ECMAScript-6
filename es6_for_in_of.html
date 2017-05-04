@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        //for in是遍历键名，for of是遍历键值
+        function add1(...value){
+            sum=0;
+            for(var v of value){
+                sum+=v;
+            }
+            return sum; //输出 15
+        }
+        console.log(add1(3,2,3,2,3,2));
+
+        function add2(...value){
+            sum=0;
+            for(var key in value){
+                sum+=key;//如果写成 sum+=value[key]  ,此时输出 15
+            }
+            return sum;
+        }
+        console.log(add2(3,2,3,2,3,2));//输出 0012345
+    </script>
+</head>
+<body>
+
+</body>
+</html>
