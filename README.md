@@ -12,17 +12,18 @@ ECMA是标准， js是实现
 	2013.3	ES6.0	ES6.0 制定草案
 	2013.12 ES6.0	ES6.0 草案发布
 	2015.6	ES6.0	ES6.0预计发布正式版， 同时Javascript.next指向 ES7.0
-	
-	在浏览器里面如何使用？
-		需要用到编译工具
-	
-		babel	
-		------------------------------------------
-		traceur	——由Google出的编译器，把ES6语法编译为ES5
-	
-		bootstrap	引导程序，跟css里面认识bootstrap不一样
 
-​    	let——用来定义变量
+在浏览器里面如何使用？需要用到编译工具
+
+
+	babel	
+	------------------------------------------
+	traceur	——由Google出的编译器，把ES6语法编译为ES5
+	
+	bootstrap	引导程序，跟css里面认识bootstrap不一样
+
+
+let——用来定义变量
 
 代码块:	{} 包起来的代码， 形成了一个作用域，块级作用域，比如： if  for while
 
@@ -92,10 +93,10 @@ const——用来定义 常量
 
 	const a=12;
 	a=15	//报错
-
+	
 	注意:  const必须给初始值， 不能重复声明
 		因为以后再也没法赋值了，所以声明的时候一定得有值
-
+	
 	用途: 为了防止意外修改变量
 		比如引入库名，组件名
 
@@ -103,11 +104,70 @@ const——用来定义 常量
 	之前:
 		var str='';
 		var str=""
-
+	
 	反单引号:	var str= ``	字符串模板
-
+	
 	之前: 	'abc'+变量名+'ef'
 	现在:	`abc${变量名}ef`
+
+复制数组:
+
+```javascript
+var arr=[1,2,3];
+//引用赋值
+var arr2=arr;
+arr2.pop();
+console.log(arr,arr2);
+//此时arr和arr2都是 Array(2) 0: 1  1: 2  length: 2
+```
+
+a). 循环
+
+```javascript
+var arr=[1,2,3];
+//循环
+var arr2=[];
+for(var i=0;i<arr.length;i++){
+  arr2[i]=arr[i];
+}
+arr2.pop();
+console.log(arr,arr2);
+////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+////此时arr2是 Array(2) 0: 1  1: 2 length: 2
+```
+
+b). Array.from(arr)
+
+```javascript
+var arr=[1,2,3];
+//Array.from(arr)
+var arr2=Array.from(arr);
+arr2.pop();
+console.log(arr,arr2);
+////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+////此时arr2是 Array(2) 0: 1  1: 2 length: 2
+```
+
+c). var arr2=[...arr];
+
+```javascript
+var arr=[1,2,3];
+//var arr2=[...arr];
+var arr2=[...arr];
+arr2.pop();
+console.log(arr,arr2);
+////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+////此时arr2是 Array(2) 0: 1  1: 2 length: 2
+```
+
+function show(...args){
+
+​	args.push(5);
+
+​	console.log(args);
+
+}
+show(1,2,3,4);
 
 
 
