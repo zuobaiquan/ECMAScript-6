@@ -312,3 +312,4 @@ var Person = {
 };
 console.log(Person);//Object birth:"2000/01/01" hello:function hello() name:"张三"
 ```
+
