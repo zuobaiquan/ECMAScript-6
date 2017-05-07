@@ -1,6 +1,6 @@
 # ECMAScript-6
 
-ECMA是标准， js是实现
+## 1.ECMA是标准， js是实现
 
 	1996	ES1.0	js稳定	Netscape将js提交给ECMA组织， ES正式出现
 	1998	ES2.0	ES2.0正式发布
@@ -22,8 +22,7 @@ ECMA是标准， js是实现
 	
 	bootstrap	引导程序，跟css里面认识bootstrap不一样
 
-
-let——用来定义变量
+## 2.let——用来定义变量
 
 代码块:	{} 包起来的代码， 形成了一个作用域，块级作用域，比如： if  for while
 
@@ -87,8 +86,8 @@ let——用来定义变量
 </body>
 ```
 
+## 3.const——用来定义 常量
 
-const——用来定义 常量
 	一旦赋值，以后再也修改不了了
 
 	const a=12;
@@ -100,7 +99,8 @@ const——用来定义 常量
 	用途: 为了防止意外修改变量
 		比如引入库名，组件名
 
-字符串连接:
+## 4.字符串连接
+
 	之前:
 		var str='';
 		var str=""
@@ -110,7 +110,7 @@ const——用来定义 常量
 	之前: 	'abc'+变量名+'ef'
 	现在:	`abc${变量名}ef`
 
-复制数组:
+## 5.复制数组
 
 ```javascript
 var arr=[1,2,3];
@@ -121,7 +121,7 @@ console.log(arr,arr2);
 //此时arr和arr2都是 Array(2) 0: 1  1: 2  length: 2
 ```
 
-a). 循环
+#### a). 循环
 
 ```javascript
 var arr=[1,2,3];
@@ -132,11 +132,11 @@ for(var i=0;i<arr.length;i++){
 }
 arr2.pop();
 console.log(arr,arr2);
-////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
-////此时arr2是 Array(2) 0: 1  1: 2 length: 2
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
 ```
 
-b). Array.from(arr)
+#### b). Array.from(arr)
 
 ```javascript
 var arr=[1,2,3];
@@ -144,11 +144,13 @@ var arr=[1,2,3];
 var arr2=Array.from(arr);
 arr2.pop();
 console.log(arr,arr2);
-////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
-////此时arr2是 Array(2) 0: 1  1: 2 length: 2
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
 ```
 
-c). var arr2=[...arr];
+#### c). var arr2=[...arr];
+
+使用 rest 参数（形式为“...变量名”），用于获取函数的多余参数
 
 ```javascript
 var arr=[1,2,3];
@@ -156,20 +158,157 @@ var arr=[1,2,3];
 var arr2=[...arr];
 arr2.pop();
 console.log(arr,arr2);
-////此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
-////此时arr2是 Array(2) 0: 1  1: 2 length: 2
-```
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
 
-function show(...args){
-
-​	args.push(5);
-
-​	console.log(args);
-
+//arguments对象并不是一个数组，但是访问单个参数的方式与访问数组元素的方式相同
+function show(){
+  console.log(arguments); 
+  //arguments.push(5);   //此时报错arguments.push is not a function
 }
 show(1,2,3,4);
 
+//改进：
+function show(...arr){
+	arr.push(5);
+	console.log(arr);
+}
+show(1,2,3,4);
+```
+
+## 6.Map对象
+
+和json相似，也是一种key-value形式，Map对象为了和for of循环配合而生的
 
 
+```javascript
+let mymap=new Map();
+//设置:map.set(name,value);
+mymap.set('a','apple');
+mymap.set('b','banana');
+//以上代码改写，一次性声明和赋值
+// let mymap = new Map([
+//   ['a','apple'],
+//   ['b','banana'],
+// ]);
+console.log(mymap);//Map(2) {"a" => "apple", "b" => "banana"}
+//alert(mymap.a);//undefined  不能这样访问
+//获取：map.get(name)
+console.log(mymap.get("a"));//apple
+//删除：map.delete(name)
+mymap.delete("a");
+console.log(mymap);//Map(1) {"b" => "banana"}
+mymap.set('a','apple');
+for(var name of mymap){
+  console.log(name); // b,banana   a,apple
+}
+//获取 key 和 value
+for(var [key,value] of mymap){
+  console.log(key, value); // key value
+}
+for(var [key] of mymap){
+  console.log(key); // key
+}
+//默认调用entries    mymap默认就是map.entries()
+for(var [key,value] of mymap.entries()){
+  console.log(name);
+}
+//只是循环key
+for(var key of mymap.keys()){ 
+  console.log(key);
+}
+//只是循环value
+for(var val of mymap.values()){     
+  console.log(val);
+}
 
+var arrData=['红楼梦','三国演义','水浒传','西游记','金瓶梅'];
+//for.. of也可以循环数组
+//只循环值: for(var value of arr){}
+for(var name of arrData){
+  console.log(name);
+}
+//只循环索引:for(var key of arr.keys()){}
+for(var name of arrData.keys()){
+  console.log(name);
+}
+//索引和值都循环： for(var some of arr.entries()){}
+for(var name of arrData.entries()){
+  console.log(name);
+}
+```
+注意：遍历map， 不能使用for in，没有效果
 
+## 7.函数
+
+#### es6之前
+
+```javascript
+function show(){
+  alert(1);
+}
+show();
+function show(a){
+  return a;
+}
+show(12);
+function show(a,b){
+  return a+b;
+}
+show(12,5);
+```
+#### 箭头函数
+
+```javascript
+//var show=a=>a;      function show(a){return a};
+//var f = () => 5;      // 等同于 var f = function () { return 5 };
+var show=a=>a;
+console.log(show(5));// 5
+
+//var show=(a,b)=>a+b;      function show(a,b){return a+b};
+var show=(a,b)=>a+b;
+console.log(show(5,4));// 9
+
+var a=101;
+var testJson={
+  a:1,
+  b:2,
+  show:()=>{
+    //使用箭头函数 this问题， this指向了window
+    console.log(this.a);//输出 101
+    console.log(this.b);//输出 undefined
+  },
+  //注意这里的区别，下面没有使用箭头函数的写法
+  show2(){
+    console.log(this.a);//输出 1
+    console.log(this.b);//输出 2
+  }
+};
+testJson.show();
+testJson.show2();
+function testShow1(){
+  console.log(arguments);
+}
+testShow1(1,2,3);//(3) [1, 2, 3, callee: function, Symbol(Symbol.iterator): function]
+var testShow2=()=>{
+  //arguments， 不能使用了
+  //console.log(arguments);
+};
+testShow2(1,2,3);//Uncaught ReferenceError: arguments is not defined
+```
+
+## 8.对象
+
+对象语法简洁化
+
+```javascript
+var birth = '2000/01/01';
+var Person = {
+  name: '张三',
+  //等同于birth: birth
+  birth,
+  // 等同于hello: function ()...
+  hello() { console.log('我的名字是', this.name); }
+};
+console.log(Person);//Object birth:"2000/01/01" hello:function hello() name:"张三"
+```

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        //for in是遍历键名，for of是遍历键值
+        var arr=["orange","apple","pear","banana"];
+        for(var i in arr){
+            console.log(i);// 0 1 2 3   索引
+        }
+        for(var i of arr){
+            console.log(i);// orange apple pear banana 值
+        }
+        for(var i in arr){
+            console.log(arr[i]);// orange apple pear banana
+        }
+
+        var myJson={
+            'a':'apple',
+            'b':'banan',
+            'c':'pear',
+            'd':'orange'
+        };
+        for(var name in myJson){
+            console.log(name); // a b c d
+        }
+        //for of循环, 可以循环数组，但不能循环json
+        // for(var name of myJson){
+        //     console.log(name);//undefined is not a function
+        // }
+        function addNum(...value){
+            sum=0;
+            for(var v of value){
+                sum+=v;
+            }
+            return sum; //输出 15
+        }
+        console.log(addNum(5,4,3,2,1));
+
+        let mymap=new Map();
+        //设置:map.set(name,value);
+        mymap.set('a','apple');
+        mymap.set('b','banana');
+        //以上代码改写，一次性声明和赋值
+        // let mymap = new Map([
+        //   ['a','apple'],
+        //   ['b','banana'],
+        // ]);
+        console.log(mymap);//Map(2) {"a" => "apple", "b" => "banana"}
+        //alert(mymap.a);//undefined  不能这样访问
+        //获取：map.get(name)
+        console.log(mymap.get("a"));//apple
+        //删除：map.delete(name)
+        mymap.delete("a");
+        console.log(mymap);//Map(1) {"b" => "banana"}
+        mymap.set('a','apple');
+        for(var name of mymap){
+            console.log(name); // b,banana   a,apple
+        }
+        //获取 key 和 value
+        for(var [key,value] of mymap){
+            console.log(key, value); // key value
+        }
+        for(var [key] of mymap){
+            console.log(key); // key
+        }
+        //默认调用entries    mymap默认就是map.entries()
+        for(var [key,value] of mymap.entries()){
+            console.log(name);
+        }
+        //只是循环key
+        for(var key of mymap.keys()){ 
+            console.log(key);
+        }
+        //只是循环value
+        for(var val of mymap.values()){     
+            console.log(val);
+        }
+
+        var arrData=['红楼梦','三国演义','水浒传','西游记','金瓶梅'];
+        //for.. of也可以循环数组
+        //只循环值: for(var value of arr){}
+        for(var name of arrData){
+            console.log(name);
+        }
+        //只循环索引:for(var key of arr.keys()){}
+        for(var name of arrData.keys()){
+            console.log(name);
+        }
+        //索引和值都循环： for(var some of arr.entries()){}
+        for(var name of arrData.entries()){
+            console.log(name);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

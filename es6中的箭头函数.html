@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>es6中的箭头函数</title>
+    <script>
+        //var show=a=>a;      function show(a){return a};
+        //var f = () => 5;      // 等同于 var f = function () { return 5 };
+        var show=a=>a;
+        console.log(show(5));// 5
+
+        //var show=(a,b)=>a+b;      function show(a,b){return a+b};
+        var show=(a,b)=>a+b;
+        console.log(show(5,4));// 9
+
+        var a=101;
+        var testJson={
+            a:1,
+            b:2,
+            show:()=>{
+               //使用箭头函数 this问题， this指向了window
+               console.log(this.a);//输出 101
+               console.log(this.b);//输出 undefined
+            },
+            //注意这里的区别，下面没有使用箭头函数的写法
+            show2(){
+                console.log(this.a);//输出 1
+                console.log(this.b);//输出 2
+            }
+        };
+        testJson.show();
+        testJson.show2();
+        function testShow1(){
+            console.log(arguments);
+        }
+        testShow1(1,2,3);//(3) [1, 2, 3, callee: function, Symbol(Symbol.iterator): function]
+        var testShow2=()=>{
+            //arguments， 不能使用了
+            //console.log(arguments);
+        };
+        testShow2(1,2,3);//Uncaught ReferenceError: arguments is not defined
+    </script>
+</head>
+<body>
+
+</body>
+</html>
