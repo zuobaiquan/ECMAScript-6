@@ -298,7 +298,7 @@ testShow2(1,2,3);//Uncaught ReferenceError: arguments is not defined
 
 ## 8.对象
 
-对象语法简洁化
+### 对象语法简洁化
 
 ```javascript
 var birth = '2000/01/01';
@@ -311,4 +311,33 @@ var Person = {
 };
 console.log(Person);//Object birth:"2000/01/01" hello:function hello() name:"张三"
 ```
+
+### 面向对象
+
+#### es6之前
+
+```javascript
+//es6之前的写法，不是真正的面向对象
+//人类  工人类
+function Person(name,age){  //既是类又是构造函数
+  	this.name=name;
+  	this.age=age;
+}
+Person.prototype.showName=function(){
+	return this.name;
+};
+Person.prototype.showAge=function(){
+	return this.age;
+};
+
+var p1=new Person('abc',10); 
+console.log(p1); //Person {name: "abc", age: 10} __proto__:Object showName Object showAge
+console.log(p1.showName());//abc
+```
+
+#### es6
+
+类	class
+
+构造函数	constructor	生成完实例以后，自己就执行的
 

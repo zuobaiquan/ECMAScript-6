@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>es6_面向对象的应用实例Queue类</title>
+    <script type="text/javascript">
+        
+        //面向对象的应用实例
+        class Queue{
+            constructor(content=[]){
+                this._queue=[...content];//复制数组
+            }
+            shift(){
+                const value=this._queue[0];
+                this._queue.shift();
+                return value;
+            }
+            push(n){
+                this._queue.push(n);
+                return this._queue.length;
+            }
+        }
+
+        var q=new Queue([1,2,3,4]);
+        console.log(q);//Queue {_queue: Array(4)}  _queue:Array(4)  __proto__:Object
+        q.shift();
+        console.log(q._queue);//[2, 3, 4]
+        q.push(5);
+        console.log(q._queue);//[2, 3, 4, 5]
+    </script>
+</head>
+<body>
+
+</body>
+</html>
