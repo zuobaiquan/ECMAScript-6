@@ -341,3 +341,163 @@ console.log(p1.showName());//abc
 
 构造函数	constructor	生成完实例以后，自己就执行的
 
+```javascript
+//es6之前的写法，不是真正的面向对象
+//ES6之前的版本中没有类和实例，是通过原型prototype完成面向对象编程。
+//人类  工人类
+function Person(name,age){  //既是类又是构造函数
+  this.name=name;
+  this.age=age;
+}
+Person.prototype.showName=function(){
+  return this.name;
+};
+Person.prototype.showAge=function(){
+  return this.age;
+};
+
+var p1=new Person('abc',10); 
+console.log(p1); //Person {name: "abc", age: 10} __proto__:Object showAge Object showName
+console.log(p1.showName());//abc
+
+//es6
+//类 class，类名首字母大写
+class People{ 
+  //构造函数  
+  ////constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。
+  //一个类必须有constructor方法，如果没有显式定义，
+  //一个空的constructor方法会被默认添加。constructor() {}
+  //构造器中也可以不给默认值constructor(name,age){
+  constructor(name='default',age=0){
+    this.name=name;
+    this.age=age;
+  }
+  showName(){
+    return this.name;
+  }
+  showAge(){
+    return this.age;
+  }
+}
+var p2=new People('abc',10); 
+console.log(p2); 
+//Person {name: "abc", age: 10} __proto__:constructor:class People Object showAge Object showName
+//相比原来多了constructor
+console.log(p2.showName());//abc
+var p3=new People('bbb',20);
+console.log(typeof p2.showName);//function
+console.log(p2.showName==p3.showName);//true
+console.log(p2.showName()==p3.showName());//false
+console.log(p2.constructor==People);//true
+
+var p3=new People(); 
+console.log(p3.showName());//default
+//继承   es6之前:  子类.prototype=new 父类();
+//es6
+//继承
+class Worker extends Person{
+  constructor(name,age,job='扫地的'){
+    super(name,age);////直接调用父类构造器进行初始化
+    //super()只能用在子类的构造函数之中，用在其他地方就会报错。
+    this.job=job;
+  }
+  showJob(){
+    return this.job;
+  }
+  showName(){
+    return "起点"+this.name+"终点";
+  }
+}
+var w1=new Worker('mmm',56);
+console.log(w1.showJob());//扫地的
+console.log(w1.showName());//起点mmm终点
+```
+
+```javascript
+//static 关键字用来定义类的静态方法。
+//静态方法是指那些不需要对类进行实例化， 使用类名就可以直接访问的方法
+//需要注意：静态方法不能被实例化的对象调用。
+//静态方法经常用来作为工具函数。
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  static distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    return Math.sqrt(dx*dx + dy*dy);
+  }
+}
+const p1 = new Point(1, 1);
+const p2 = new Point(2, 2);
+console.log(Point.distance(p1, p2)); //根号2 即1.4142135623730951
+```
+
+## 9.模块
+
+## 10Promise对象
+
+异步: 多个操作可以同时进行
+
+
+	//ajax
+	ajax(url,function(){
+		//1
+	},fnFail);
+	//2
+Promise就是一个对象，用来传递异步操作的数据(消息)
+
+	pending（等待、处理中）
+			—> Resolve(完成、fullFilled)
+			—> Rejected(拒绝、失败)
+使用：
+	var p1=new Promise(function(resolve,reject){
+		//resolve  成功了
+		//reject    失败了
+	    	});
+	
+	var p1=new Promise(function(resolve,reject){
+		if(异步处理成功了){
+			resolve(成功数据)
+		}else{
+			reject(失败原因)
+		}
+	    	});
+	
+	p1.then(成功(resolve),失败(reject))	√
+	--------------------------------------------
+	
+	p1.catch——用来捕获错误
+	
+	--------------------------------------------
+	Promise.all——全部，用于将多个promise对象，组合，包装成一个全新的promise实例
+		Promise.all([p1,p2,p3...]);
+	
+		所有的promise对象，都正确，才走成功
+		否则，只要有一个错误，是失败了
+	--------------------------------------------
+	Promise.race——返回也是一个promise对象
+		最先能执行的promise结果， 哪个最快，用哪个
+	--------------------------------------------
+	Promise.reject()	——生成错误的一个promise
+	
+	--------------------------------------------
+	Promise.resolve()	——生成一个成功的promise对象
+		语法：
+			Promise.resolve(value)
+			Promise.resolve(promise)
+简单的实例
+
+```javascript
+var p1=new Promise(function(resolve,reject){
+  	resolve(1);
+});
+p1.then(function(value){
+  	//此时执行这一条
+  	alert('成功了:'+value);
+},function(){
+  	//如果是reject，则执行这一条
+  	alert('失败了');
+});
+```

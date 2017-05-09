@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>es6中的Promise对象</title>
+    <script>
+        //封装ajax
+        function ajax(url,fnSucc,fnFail){
+            var oAjax=new XMLHttpRequest();
+            oAjax.open('GET',url,true);
+            oAjax.send();
+            oAjax.onload=function(){
+                if(oAjax.readyState==4 && oAjax.status==200){
+                    fnSucc(oAjax.responseText)
+                }else{
+                    fnFail(oAjax.status);
+                }
+            };
+        }
+        window.onload=function(){
+            //点击按钮，把test.txt文件的数据放到div#box1中
+            let oBtn=document.getElementById('btn1');
+            let oBox=document.getElementById('box1');
+
+            oBtn.onclick=function(){
+                let p1=new Promise(function(resolve,reject){
+                    ajax('test.txt',function(str){
+                        resolve(str);
+                    },function(str){
+                        reject(str);
+                    });
+                });
+
+                p1.then(function(str){
+                    oBox.innerHTML=str;
+                },function(str){
+                    oBox.innerHTML=str;
+                });
+            };
+        };
+    </script>
+</head>
+<body>
+<input type="button" value="点我" id="btn1">
+<div id="box1"></div>
+</body>
+</html>

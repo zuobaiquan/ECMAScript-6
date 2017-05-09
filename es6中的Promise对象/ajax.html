@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		// 简单的ajax原生实现
+		var url = 'https://hq.tigerbrokers.com/fundamental/finance_calendar/getType/2017-02-26/2017-06-10';
+		var result;
+
+		var XHR = new XMLHttpRequest();
+		XHR.open('GET', url, true);
+		XHR.send();
+
+		XHR.onreadystatechange = function() {
+		    if (XHR.readyState == 4 && XHR.status == 200) {
+		        result = XHR.response;
+		        console.log(result);
+		    }
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
