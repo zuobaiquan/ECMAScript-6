@@ -1,1918 +1,503 @@
-# ES6 Style Guide
+# ECMAScript-6
 
-**用更合理的方式写 JavaScript**
+## 1.ECMA是标准， js是实现
 
-翻译自 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript) 。 [翻译原文地址](https://github.com/yuche/javascript) 
+	1996	ES1.0	js稳定	Netscape将js提交给ECMA组织， ES正式出现
+	1998	ES2.0	ES2.0正式发布
+	1999	ES3.0	ES3被浏览器广泛支持
+	2007	ES4.0	ES4过于激进，被废除了
+	2008	ES3.1	4.0退化为严重缩水版的 3.1, 代号	Harmony（和谐）
+	2009	ES5.0	ES5正式发布了，同时公布JavScript.next 也就后来 6.0
+	2011	ES5.1	ES5.1 成为了ISO国际标准
+	2013.3	ES6.0	ES6.0 制定草案
+	2013.12 ES6.0	ES6.0 草案发布
+	2015.6	ES6.0	ES6.0预计发布正式版， 同时Javascript.next指向 ES7.0
 
-> 因为自己团队用删减部分见谅 如有需要，请看原版
->
-> 团队代码缩进为2个空格，行末不加分号，不作为讨论范围
+在浏览器里面如何使用？需要用到编译工具
 
-<a name="table-of-contents"></a>
-## 目录
+	babel	
+	------------------------------------------
+	traceur	——由Google出的编译器，把ES6语法编译为ES5
+	
+	bootstrap	引导程序，跟css里面认识bootstrap不一样
 
-  1. [类型](#types)
-  2. [引用](#references)
-  3. [对象](#objects)
-  4. [数组](#arrays)
-  5. [解构](#destructuring)
-  6. [字符串](#strings)
-  7. [函数](#functions)
-  8. [箭头函数](#arrow-functions)
-  9. [构造函数](#constructors)
-  10. [模块](#modules)
-  11. [Iterators & Generators ](#iterators-and-generators)
-  12. [属性](#properties)
-  13. [变量](#variables)
-  14. [提升](#hoisting)
-  15. [比较运算符 & 等号](#comparison-operators--equality)
-  16. [代码块](#blocks)
-  17. [注释](#comments)
-  18. [空白](#whitespace)
-  19. [逗号](#commas)
-  20. [分号](#semicolons)
-  21. [类型转换](#type-casting--coercion)
-  22. [命名规则](#naming-conventions)
-  23. [存取器](#accessors)
-  24. [事件](#events)
-  25. [jQuery](#jquery)
-  26. [ECMAScript 5 兼容性](#ecmascript-5-compatibility)
-  27. [ECMAScript 6 编码规范](#ecmascript-6-styles)
+## 2.let——用来定义变量
 
-      ​
+代码块:	{} 包起来的代码， 形成了一个作用域，块级作用域，比如： if  for while
 
-<a name="types"></a>
-##  类型 
+特点: 只能在代码块里面使用，而var 只有函数作用域
 
-- [1.1](#1.1) <a name='1.1'></a> **基本类型**: 直接存取基本类型。
+​    a). let具备块级作用域
 
-  + `字符串`
-  + `数值`
-  + `布尔类型`
-  + `null`
-  + `undefined`
+​    b). 不允许重复声明
 
-  ```javascript
-  const foo = 1
-  let bar = foo
+​          let a=12;
 
-  bar = 9
+​          let a=5;	//错的
 
-  console.log(foo, bar) // => 1, 9
-  ```
-- [1.2](#1.2) <a name='1.2'></a> **复制类型**: 通过引用的方式存取复杂类型。
+总结: 其实let才接近其他语言的变量
 
-  + `对象`
-  + `数组`
-  + `函数`
+总结: 块级作用域，其实就是 匿名函数立即调用
 
-  ```javascript
-  const foo = [1, 2]
-  const bar = foo
-
-  bar[0] = 9
-
-  console.log(foo[0], bar[0]) // => 9, 9
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="references"></a>
-## 引用
-
-- [2.1](#2.1) <a name='2.1'></a> 对所有的引用使用 `const` ；不要使用 `var`。
-
-  > 为什么？这能确保你无法对引用重新赋值，也不会导致出现 bug 或难以理解。
-
-```javascript
-// bad
-var a = 1
-var b = 2
-
-// good
-const a = 1
-const b = 2
+```html
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+//    window.onload=function(){
+//        var btn=document.getElementsByTagName("input");
+//        for(var i=0;i<btn.length;i++){
+//            btn[i].onclick=function(){
+//                alert(i);
+//            }
+//        }
+//    }
+    //发现弹出都是3
+    //变量i是var声明的，在全局范围内都有效，所以全局只有一个变量i
+    //每一次循环，变量i的值都会发生改变，而循环内被赋给数组a的function在运行时
+    //会通过闭包读到这同一个变量i，导致最后输出的是最后一轮的i的值，也就是10
+    //改进：封闭空间
+//    window.onload=function(){
+//        var btn=document.getElementsByTagName("input");
+//        for(var i=0;i<btn.length;i++){
+//            (function(i){
+//                btn[i].onclick=function(){
+//                    alert(i);
+//                }
+//            })(i)
+//        }
+//    }
+      //改进，利用es新特性 let，，即把var变量换成 let即可
+      window.onload=function(){
+        var btn=document.getElementsByTagName("input");
+        for(let i=0;i<btn.length;i++){
+            btn[i].onclick=function(){
+                alert(i);
+            }
+        }
+      }
+    </script>
+</head>
+<body>
+<input type="button" value="按钮1">
+<input type="button" value="按钮2">
+<input type="button" value="按钮3">
+</body>
 ```
 
-- [2.2](#2.2) <a name='2.2'></a> 如果你一定需要可变动的引用，使用 `let` 代替 `var`。
+## 3.const——用来定义 常量
 
-  > 为什么？因为  `let` 是块级作用域，而 `var` 是函数作用域。
+	一旦赋值，以后再也修改不了了
+
+	const a=12;
+	a=15	//报错
+	
+	注意:  const必须给初始值， 不能重复声明
+		因为以后再也没法赋值了，所以声明的时候一定得有值
+	
+	用途: 为了防止意外修改变量
+		比如引入库名，组件名
+
+## 4.字符串连接
+
+	之前:
+		var str='';
+		var str=""
+	
+	反单引号:	var str= ``	字符串模板
+	
+	之前: 	'abc'+变量名+'ef'
+	现在:	`abc${变量名}ef`
+
+## 5.复制数组
 
 ```javascript
-// bad
-var count = 1
-if (true) {
-  count += 1
-}
-
-// good, use the let.
-let count = 1
-if (true) {
-  count += 1
-}
+var arr=[1,2,3];
+//引用赋值
+var arr2=arr;
+arr2.pop();
+console.log(arr,arr2);
+//此时arr和arr2都是 Array(2) 0: 1  1: 2  length: 2
 ```
 
-- [2.3](#2.3) <a name='2.3'></a> 注意 `let` 和 `const` 都是块级作用域。
-
-  ```javascript
-  // const 和 let 只存在于它们被定义的区块内。
-  {
-    let a = 1
-    const b = 1
-  }
-  console.log(a) // ReferenceError
-  console.log(b) // ReferenceError
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="objects"></a>
-## 对象
-
-- [3.1](#3.1) <a name='3.1'></a> 使用字面值创建对象。
-
-  ```javascript
-  // bad
-  const item = new Object();
-
-  // good
-  const item = {};
-  ```
-
-- [3.2](#3.2) <a name='3.2'></a> 如果你的代码在浏览器环境下执行，别使用 [保留字](http://es5.github.io/#x7.6.1) 作为键值。这样的话在 IE8 不会运行。 [更多信息](https://github.com/airbnb/javascript/issues/61)。 但在 ES6 模块和服务器端中使用没有问题。
-
-  ```javascript
-  // bad
-  const superman = {
-    default: { clark: 'kent' },
-    private: true
-  }
-
-  // good
-  const superman = {
-    defaults: { clark: 'kent' },
-    hidden: true
-  }
-  ```
-
-- [3.3](#3.3) <a name='3.3'></a> 使用同义词替换需要使用的保留字。
-
-  ```javascript
-  // bad
-  const superman = {
-    class: 'alien',
-  }
-
-  // bad
-  const superman = {
-    klass: 'alien',
-  }
-
-  // good
-  const superman = {
-    type: 'alien',
-  }
-  ```
-
-  <a name="es6-computed-properties"></a>
-- [3.4](#3.4) <a name='3.4'></a> 创建有动态属性名的对象时，使用可被计算的属性名称。
-
-  > 为什么？因为这样可以让你在一个地方定义所有的对象属性。
+#### a). 循环
 
 ```javascript
-
-function getKey(k) {
-  return `a key named ${k}`
+var arr=[1,2,3];
+//循环
+var arr2=[];
+for(var i=0;i<arr.length;i++){
+  arr2[i]=arr[i];
 }
-
-// bad
-const obj = {
-  id: 5,
-  name: 'San Francisco'
-}
-obj[getKey('enabled')] = true
-
-// good
-const obj = {
-  id: 5,
-  name: 'San Francisco',
-  [getKey('enabled')]: true
-}
-
+arr2.pop();
+console.log(arr,arr2);
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
 ```
 
-  <a name="es6-object-shorthand"></a>
-- [3.5](#3.5) <a name='3.5'></a> 使用对象方法的简写。
+#### b). Array.from(arr)
 
-  ```javascript
-  // bad
-  const atom = {
-    value: 1,
-    addValue: function (value) {
-      return atom.value + value
-    }
-  };
+```javascript
+var arr=[1,2,3];
+//Array.from(arr)
+var arr2=Array.from(arr);
+arr2.pop();
+console.log(arr,arr2);
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
+```
 
-  // good
-  const atom = {
-    value: 1,
-    addValue(value) {
-      return atom.value + value
-    },
+#### c). var arr2=[...arr];
+
+使用 rest 参数（形式为“...变量名”），用于获取函数的多余参数
+
+```javascript
+var arr=[1,2,3];
+//var arr2=[...arr];
+var arr2=[...arr];
+arr2.pop();
+console.log(arr,arr2);
+//此时arr是 Array(3) 0: 1  1: 2 2:3 length: 3
+//此时arr2是 Array(2) 0: 1  1: 2 length: 2
+
+//arguments对象并不是一个数组，但是访问单个参数的方式与访问数组元素的方式相同
+function show(){
+  console.log(arguments); 
+  //arguments.push(5);   //此时报错arguments.push is not a function
+}
+show(1,2,3,4);
+
+//改进：
+function show(...arr){
+	arr.push(5);
+	console.log(arr);
+}
+show(1,2,3,4);
+```
+
+## 6.Map对象
+
+和json相似，也是一种key-value形式，Map对象为了和for of循环配合而生的
+
+
+```javascript
+let mymap=new Map();
+//设置:map.set(name,value);
+mymap.set('a','apple');
+mymap.set('b','banana');
+//以上代码改写，一次性声明和赋值
+// let mymap = new Map([
+//   ['a','apple'],
+//   ['b','banana'],
+// ]);
+console.log(mymap);//Map(2) {"a" => "apple", "b" => "banana"}
+//alert(mymap.a);//undefined  不能这样访问
+//获取：map.get(name)
+console.log(mymap.get("a"));//apple
+//删除：map.delete(name)
+mymap.delete("a");
+console.log(mymap);//Map(1) {"b" => "banana"}
+mymap.set('a','apple');
+for(var name of mymap){
+  console.log(name); // b,banana   a,apple
+}
+//获取 key 和 value
+for(var [key,value] of mymap){
+  console.log(key, value); // key value
+}
+for(var [key] of mymap){
+  console.log(key); // key
+}
+//默认调用entries    mymap默认就是map.entries()
+for(var [key,value] of mymap.entries()){
+  console.log(name);
+}
+//只是循环key
+for(var key of mymap.keys()){ 
+  console.log(key);
+}
+//只是循环value
+for(var val of mymap.values()){     
+  console.log(val);
+}
+
+var arrData=['红楼梦','三国演义','水浒传','西游记','金瓶梅'];
+//for.. of也可以循环数组
+//只循环值: for(var value of arr){}
+for(var name of arrData){
+  console.log(name);
+}
+//只循环索引:for(var key of arr.keys()){}
+for(var name of arrData.keys()){
+  console.log(name);
+}
+//索引和值都循环： for(var some of arr.entries()){}
+for(var name of arrData.entries()){
+  console.log(name);
+}
+```
+注意：遍历map， 不能使用for in，没有效果
+
+## 7.函数
+
+#### es6之前
+
+```javascript
+function show(){
+  alert(1);
+}
+show();
+function show(a){
+  return a;
+}
+show(12);
+function show(a,b){
+  return a+b;
+}
+show(12,5);
+```
+#### 箭头函数
+
+```javascript
+//var show=a=>a;      function show(a){return a};
+//var f = () => 5;      // 等同于 var f = function () { return 5 };
+var show=a=>a;
+console.log(show(5));// 5
+
+//var show=(a,b)=>a+b;      function show(a,b){return a+b};
+var show=(a,b)=>a+b;
+console.log(show(5,4));// 9
+
+var a=101;
+var testJson={
+  a:1,
+  b:2,
+  show:()=>{
+    //使用箭头函数 this问题， this指向了window
+    console.log(this.a);//输出 101
+    console.log(this.b);//输出 undefined
+  },
+  //注意这里的区别，下面没有使用箭头函数的写法
+  show2(){
+    console.log(this.a);//输出 1
+    console.log(this.b);//输出 2
   }
-  ```
-
-  <a name="es6-object-concise"></a>
-- [3.6](#3.6) <a name='3.6'></a> 使用对象属性值的简写。
-
-  > 为什么？因为这样更短更有描述性。
-
-```javascript
-const lukeSkywalker = 'Luke Skywalker'
-
-// bad
-const obj = {
-  lukeSkywalker: lukeSkywalker,
+};
+testJson.show();
+testJson.show2();
+function testShow1(){
+  console.log(arguments);
 }
-
-// good
-const obj = {
-  lukeSkywalker
-}
+testShow1(1,2,3);//(3) [1, 2, 3, callee: function, Symbol(Symbol.iterator): function]
+var testShow2=()=>{
+  //arguments， 不能使用了
+  //console.log(arguments);
+};
+testShow2(1,2,3);//Uncaught ReferenceError: arguments is not defined
 ```
 
-- [3.7](#3.7) <a name='3.7'></a> 在对象属性声明前把简写的属性分组。
+## 8.对象
 
-  > 为什么？因为这样能清楚地看出哪些属性使用了简写。
+### 对象语法简洁化
 
 ```javascript
-const anakinSkywalker = 'Anakin Skywalker'
-const lukeSkywalker = 'Luke Skywalker'
-
-// bad
-const obj = {
-  episodeOne: 1,
-  twoJedisWalkIntoACantina: 2,
-  lukeSkywalker,
-  episodeThree: 3,
-  mayTheFourth: 4,
-  anakinSkywalker
-}
-
-// good
-const obj = {
-  lukeSkywalker,
-  anakinSkywalker,
-  episodeOne: 1,
-  twoJedisWalkIntoACantina: 2,
-  episodeThree: 3,
-  mayTheFourth: 4
-}
+var birth = '2000/01/01';
+var Person = {
+  name: '张三',
+  //等同于birth: birth
+  birth,
+  // 等同于hello: function ()...
+  hello() { console.log('我的名字是', this.name); }
+};
+console.log(Person);//Object birth:"2000/01/01" hello:function hello() name:"张三"
 ```
 
-**[⬆ 返回目录](#table-of-contents)**
+### 面向对象
 
-<a name="arrays"></a>
-## 数组
-
-- [4.1](#4.1) <a name='4.1'></a> 使用字面值创建数组。
-
-  ```javascript
-  // bad
-  const items = new Array();
-
-  // good
-  const items = [];
-  ```
-
-- [4.2](#4.2) <a name='4.2'></a> 向数组添加元素时使用 Arrary#push 替代直接赋值。
-
-  ```javascript
-  const someStack = []
-  // bad
-  someStack[someStack.length] = 'abracadabra'
-
-  // good
-  someStack.push('abracadabra')
-  ```
-
-
-
-
-  <a name="es6-array-spreads"></a>
-- [4.3](#4.3) <a name='4.3'></a> 使用拓展运算符 `...` 复制数组。
-
-  ```javascript
-  // bad
-  const len = items.length
-  const itemsCopy = []
-  let i
-
-  for (i = 0; i < len; i++) {
-    itemsCopy[i] = items[i]
-  }
-
-  // good
-  const itemsCopy = [...items]
-  ```
-- [4.4](#4.4) <a name='4.4'></a> 使用 Array#from 把一个类数组对象转换成数组。
-
-  ```javascript
-  const foo = document.querySelectorAll('.foo')
-  const nodes = Array.from(foo)
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="destructuring"></a>
-## 解构
-
-- [5.1](#5.1) <a name='5.1'></a> 使用解构存取和使用多属性对象。
-
-  > 为什么？因为解构能减少临时引用属性。
+#### es6之前
 
 ```javascript
-// bad
-function getFullName(user) {
-  const firstName = user.firstName
-  const lastName = user.lastName
-
-  return `${firstName} ${lastName}`
+//es6之前的写法，不是真正的面向对象
+//人类  工人类
+function Person(name,age){  //既是类又是构造函数
+  	this.name=name;
+  	this.age=age;
 }
-
-// good
-function getFullName(obj) {
-  const { firstName, lastName } = obj
-  return `${firstName} ${lastName}`
-}
-
-// best
-function getFullName({ firstName, lastName }) {
-  return `${firstName} ${lastName}`
-}
-```
-
-- [5.2](#5.2) <a name='5.2'></a> 对数组使用解构赋值。
-
-  ```javascript
-  const arr = [1, 2, 3, 4]
-
-  // bad
-  const first = arr[0]
-  const second = arr[1]
-
-  // good
-  const [first, second] = arr
-  ```
-
-- [5.3](#5.3) <a name='5.3'></a> 需要回传多个值时，使用对象解构，而不是数组解构。
-  > 为什么？增加属性或者改变排序不会改变调用时的位置。
-
-```javascript
-// bad
-function processInput(input) {
-  // then a miracle occurs
-  return [left, right, top, bottom];
-}
-
-// 调用时需要考虑回调数据的顺序。
-const [left, __, top] = processInput(input);
-
-// good
-function processInput(input) {
-  // then a miracle occurs
-  return { left, right, top, bottom };
-}
-
-// 调用时只选择需要的数据
-const { left, right } = processInput(input);
-```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="strings"></a>
-## Strings
-
-- [6.1](#6.1) <a name='6.1'></a> 字符串使用单引号 `''` 。
-
-  ```javascript
-  // bad
-  const name = "Capt. Janeway"
-
-  // good
-  const name = 'Capt. Janeway'
-  ```
-
-- [6.2](#6.2) <a name='6.2'></a> 字符串超过 80 个字节应该使用字符串连接号换行。
-- [6.3](#6.3) <a name='6.3'></a> 注：过度使用字串连接符号可能会对性能造成影响。[jsPerf](http://jsperf.com/ya-string-concat) 和 [讨论](https://github.com/airbnb/javascript/issues/40).
-
-  ```javascript
-  // bad
-  const errorMessage = 'This is a super long error that was thrown because of Batman. When you stop to think about how Batman had anything to do with this, you would get nowhere fast.'
-
-  // bad
-  const errorMessage = 'This is a super long error that was thrown because \
-  of Batman. When you stop to think about how Batman had anything to do \
-  with this, you would get nowhere \
-  fast.'
-
-  // good
-  const errorMessage = 'This is a super long error that was thrown because ' +
-    'of Batman. When you stop to think about how Batman had anything to do ' +
-    'with this, you would get nowhere fast.'
-  ```
-
-  <a name="es6-template-literals"></a>
-- [6.4](#6.4) <a name='6.4'></a> 程序化生成字符串时，使用模板字符串代替字符串连接。
-
-  > 为什么？模板字符串更为简洁，更具可读性。
-
-```javascript
-// bad
-function sayHi(name) {
-  return 'How are you, ' + name + '?';
-}
-
-// bad
-function sayHi(name) {
-  return ['How are you, ', name, '?'].join();
-}
-
-// good
-function sayHi(name) {
-  return `How are you, ${name}?`;
-}
-```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="functions"></a>
-## 函数
-
-- [7.1](#7.1) <a name='7.1'></a> 使用函数声明代替函数表达式。
-
-  > 为什么？因为函数声明是可命名的，所以他们在调用栈中更容易被识别。此外，函数声明会把整个函数提升（hoisted），而函数表达式只会把函数的引用变量名提升。这条规则使得[箭头函数](#arrow-functions)可以取代函数表达式。
-
-```javascript
-// bad
-const foo = function () {
+Person.prototype.showName=function(){
+	return this.name;
+};
+Person.prototype.showAge=function(){
+	return this.age;
 };
 
-// good
-function foo() {
-}
+var p1=new Person('abc',10); 
+console.log(p1); //Person {name: "abc", age: 10} __proto__:Object showName Object showAge
+console.log(p1.showName());//abc
 ```
 
-- [7.2](#7.2) <a name='7.2'></a> 函数表达式:
+#### es6
 
-  ```javascript
-  // 立即调用的函数表达式 (IIFE)
-  (() => {
-    console.log('Welcome to the Internet. Please follow me.');
-  })();
-  ```
+类	class
 
-- [7.3](#7.3) <a name='7.3'></a>  **注意:**永远不要在一个非函数代码块（`if`、`while` 等）中声明一个函数，把那个函数赋给一个变量。浏览器允许你这么做，但它们的解析表现不一致。
-- [7.4](#7.4) <a name='7.4'></a> **注意:** ECMA-262 把 `block` 定义为一组语句。函数声明不是语句。[阅读 ECMA-262 关于这个问题的说明](http://www.ecma-international.org/publications/files/ECMA-ST/Ecma-262.pdf#page=97)。
-
-  ```javascript
-  // bad
-  if (currentUser) {
-    function test() {
-      console.log('Nope.');
-    }
-  }
-
-  // good
-  let test;
-  if (currentUser) {
-    test = () => {
-      console.log('Yup.');
-    };
-  }
-  ```
-
-- [7.5](#7.5) <a name='7.5'></a> 永远不要把参数命名为 `arguments`。这将取代原来函数作用域内的 `arguments` 对象。
-
-  ```javascript
-  // bad
-  function nope(name, options, arguments) {
-    // ...stuff...
-  }
-
-  // good
-  function yup(name, options, args) {
-    // ...stuff...
-  }
-  ```
-
-  <a name="es6-rest"></a>
-- [7.6](#7.6) <a name='7.6'></a> 不要使用 `arguments`。可以选择 rest 语法 `...` 替代。
-
-  > 为什么？使用 `...` 能明确你要传入的参数。另外 rest 参数是一个真正的数组，而 `arguments` 是一个类数组。
+构造函数	constructor	生成完实例以后，自己就执行的
 
 ```javascript
-// bad
-function concatenateAll() {
-  const args = Array.prototype.slice.call(arguments);
-  return args.join('')
+//es6之前的写法，不是真正的面向对象
+//ES6之前的版本中没有类和实例，是通过原型prototype完成面向对象编程。
+//人类  工人类
+function Person(name,age){  //既是类又是构造函数
+  this.name=name;
+  this.age=age;
 }
+Person.prototype.showName=function(){
+  return this.name;
+};
+Person.prototype.showAge=function(){
+  return this.age;
+};
 
-// good
-function concatenateAll(...args) {
-  return args.join('')
+var p1=new Person('abc',10); 
+console.log(p1); //Person {name: "abc", age: 10} __proto__:Object showAge Object showName
+console.log(p1.showName());//abc
+
+//es6
+//类 class，类名首字母大写
+class People{ 
+  //构造函数  
+  ////constructor方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。
+  //一个类必须有constructor方法，如果没有显式定义，
+  //一个空的constructor方法会被默认添加。constructor() {}
+  //构造器中也可以不给默认值constructor(name,age){
+  constructor(name='default',age=0){
+    this.name=name;
+    this.age=age;
+  }
+  showName(){
+    return this.name;
+  }
+  showAge(){
+    return this.age;
+  }
 }
+var p2=new People('abc',10); 
+console.log(p2); 
+//Person {name: "abc", age: 10} __proto__:constructor:class People Object showAge Object showName
+//相比原来多了constructor
+console.log(p2.showName());//abc
+var p3=new People('bbb',20);
+console.log(typeof p2.showName);//function
+console.log(p2.showName==p3.showName);//true
+console.log(p2.showName()==p3.showName());//false
+console.log(p2.constructor==People);//true
+
+var p3=new People(); 
+console.log(p3.showName());//default
+//继承   es6之前:  子类.prototype=new 父类();
+//es6
+//继承
+class Worker extends Person{
+  constructor(name,age,job='扫地的'){
+    super(name,age);////直接调用父类构造器进行初始化
+    //super()只能用在子类的构造函数之中，用在其他地方就会报错。
+    this.job=job;
+  }
+  showJob(){
+    return this.job;
+  }
+  showName(){
+    return "起点"+this.name+"终点";
+  }
+}
+var w1=new Worker('mmm',56);
+console.log(w1.showJob());//扫地的
+console.log(w1.showName());//起点mmm终点
 ```
-
-  <a name="es6-default-parameters"></a>
-- [7.7](#7.7) <a name='7.7'></a> 直接给函数的参数指定默认值，不要使用一个变化的函数参数。
-
-  ```javascript
-  // really bad
-  function handleThings(opts) {
-    // 不！我们不应该改变函数参数。
-    // 更加糟糕: 如果参数 opts 是 false 的话，它就会被设定为一个对象。
-    // 但这样的写法会造成一些 Bugs。
-    //（译注：例如当 opts 被赋值为空字符串，opts 仍然会被下一行代码设定为一个空对象。）
-    opts = opts || {};
-    // ...
-  }
-
-  // still bad
-  function handleThings(opts) {
-    if (opts === void 0) {
-      opts = {};
-    }
-    // ...
-  }
-
-  // good
-  function handleThings(opts = {}) {
-    // ...
-  }
-  ```
-
-- [7.8](#7.8) <a name='7.8'></a> 直接给函数参数赋值时需要避免副作用。
-
-  > 为什么？因为这样的写法让人感到很困惑。
 
 ```javascript
-  var b = 1;
-  // bad
-  function count(a = b++) {
-    console.log(a);
+//static 关键字用来定义类的静态方法。
+//静态方法是指那些不需要对类进行实例化， 使用类名就可以直接访问的方法
+//需要注意：静态方法不能被实例化的对象调用。
+//静态方法经常用来作为工具函数。
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
   }
-  count();  // 1
-  count();  // 2
-  count(3); // 3
-  count();  // 3
-```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="arrow-functions"></a>
-## 箭头函数
-
-- [8.1](#8.1) <a name='8.1'></a> 当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。
-
-  > 为什么?因为箭头函数创造了新的一个 `this` 执行环境（译注：参考 [Arrow functions - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) 和 [ES6 arrow functions, syntax and lexical scoping](http://toddmotto.com/es6-arrow-functions-syntaxes-and-lexical-scoping/)），通常情况下都能满足你的需求，而且这样的写法更为简洁。
-
-
-  > 为什么不？如果你有一个相当复杂的函数，你或许可以把逻辑部分转移到一个函数声明上。
-
-```javascript
-// bad
-[1, 2, 3].map(function (x) {
-  return x * x
-})
-
-// good
-[1, 2, 3].map((x) => {
-  return x * x
-})
-```
-
-- [8.2](#8.2) <a name='8.2'></a> 如果一个函数适合用一行写出并且只有一个参数，那就把花括号、圆括号和 `return` 都省略掉。如果不是，那就不要省略。
-
-  > 为什么？语法糖。在链式调用中可读性很高。
-
-
-  > 为什么不？当你打算回传一个对象的时候。
-
-```javascript
-// good
-[1, 2, 3].map(x => x * x)
-
-// good
-[1, 2, 3].reduce((total, n) => {
-  return total + n
-}, 0)
-```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="constructors"></a>
-## 构造器
-
-- [9.1](#9.1) <a name='9.1'></a> 总是使用 `class`。避免直接操作 `prototype` 。
-
-  > 为什么? 因为 `class` 语法更为简洁更易读。
-
-```javascript
-// bad
-function Queue(contents = []) {
-  this._queue = [...contents]
-}
-Queue.prototype.pop = function() {
-  const value = this._queue[0]
-  this._queue.splice(0, 1)
-  return value
-}
-// good
-class Queue {
-  constructor(contents = []) {
-    this._queue = [...contents]
-  }
-  pop() {
-    const value = this._queue[0]
-    this._queue.splice(0, 1)
-    return value
+  static distance(a, b) {
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    return Math.sqrt(dx*dx + dy*dy);
   }
 }
+const p1 = new Point(1, 1);
+const p2 = new Point(2, 2);
+console.log(Point.distance(p1, p2)); //根号2 即1.4142135623730951
 ```
 
-- [9.2](#9.2) <a name='9.2'></a> 使用 `extends` 继承。
+## 9.模块
 
-  > 为什么？因为 `extends` 是一个内建的原型继承方法并且不会破坏 `instanceof`。
+## 10Promise对象
+
+异步: 多个操作可以同时进行
+
+
+	//ajax
+	ajax(url,function(){
+		//1
+	},fnFail);
+	//2
+Promise就是一个对象，用来传递异步操作的数据(消息)
+
+	pending（等待、处理中）
+			—> Resolve(完成、fullFilled)
+			—> Rejected(拒绝、失败)
+使用：
+	var p1=new Promise(function(resolve,reject){
+		//resolve  成功了
+		//reject    失败了
+	    	});
+	
+	var p1=new Promise(function(resolve,reject){
+		if(异步处理成功了){
+			resolve(成功数据)
+		}else{
+			reject(失败原因)
+		}
+	    	});
+	
+	p1.then(成功(resolve),失败(reject))	√
+	--------------------------------------------
+	
+	p1.catch——用来捕获错误
+	
+	--------------------------------------------
+	Promise.all——全部，用于将多个promise对象，组合，包装成一个全新的promise实例
+		Promise.all([p1,p2,p3...]);
+	
+		所有的promise对象，都正确，才走成功
+		否则，只要有一个错误，是失败了
+	--------------------------------------------
+	Promise.race——返回也是一个promise对象
+		最先能执行的promise结果， 哪个最快，用哪个
+	--------------------------------------------
+	Promise.reject()	——生成错误的一个promise
+	
+	--------------------------------------------
+	Promise.resolve()	——生成一个成功的promise对象
+		语法：
+			Promise.resolve(value)
+			Promise.resolve(promise)
+简单的实例
 
 ```javascript
-
-// bad
-const inherits = require('inherits')
-function PeekableQueue(contents) {
-  Queue.apply(this, contents)
-}
-inherits(PeekableQueue, Queue)
-PeekableQueue.prototype.peek = function() {
-  return this._queue[0]
-}
-
-// good
-class PeekableQueue extends Queue {
-  peek() {
-    return this._queue[0];
-  }
-}
+var p1=new Promise(function(resolve,reject){
+  	resolve(1);
+});
+p1.then(function(value){
+  	//此时执行这一条
+  	alert('成功了:'+value);
+},function(){
+  	//如果是reject，则执行这一条
+  	alert('失败了');
+});
 ```
-
-- [9.3](#9.3) <a name='9.3'></a> 方法可以返回 `this` 来帮助链式调用。
-
-  ```javascript
-  // bad
-  Jedi.prototype.jump = function() {
-    this.jumping = true
-    return true
-  };
-
-  Jedi.prototype.setHeight = function(height) {
-    this.height = height;
-  };
-
-  const luke = new Jedi()
-  luke.jump() // => true
-  luke.setHeight(20) // => undefined
-
-  // good
-  class Jedi {
-    jump() {
-      this.jumping = true
-      return this
-    }
-
-    setHeight(height) {
-      this.height = height
-      return this
-    }
-  }
-
-  const luke = new Jedi()
-
-  luke.jump().setHeight(20)
-  ```
-
-
-- [9.4](#9.4) <a name='9.4'></a> 可以写一个自定义的 `toString()` 方法，但要确保它能正常运行并且不会引起副作用。
-
-  ```javascript
-  class Jedi {
-    constructor(options = {}) {
-      this.name = options.name || 'no name'
-    }
-
-    getName() {
-      return this.name;
-    }
-
-    toString() {
-      return `Jedi - ${this.getName()}`
-    }
-  }
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="modules"></a>
-## 模块
-
-- [10.1](#10.1) <a name='10.1'></a> 总是使用模组 (`import`/`export`) 而不是其他非标准模块系统。你可以编译为你喜欢的模块系统。
-
-  > 为什么？模块就是未来，让我们开始迈向未来吧。
-
-```javascript
-// bad
-const AirbnbStyleGuide = require('./AirbnbStyleGuide')
-module.exports = AirbnbStyleGuide.es6
-
-// ok
-import AirbnbStyleGuide from './AirbnbStyleGuide'
-export default AirbnbStyleGuide.es6
-
-// best
-import { es6 } from './AirbnbStyleGuide'
-export default es6
-```
-
-- [10.2](#10.2) <a name='10.2'></a> 不要使用通配符 import。
-
-  > 为什么？这样能确保你只有一个默认 export。
-
-```javascript
-// bad
-import * as AirbnbStyleGuide from './AirbnbStyleGuide'
-
-// good
-import AirbnbStyleGuide from './AirbnbStyleGuide'
-```
-
-- [10.3](#10.3) <a name='10.3'></a>不要从 import 中直接 export。
-
-  > 为什么？虽然一行代码简洁明了，但让 import 和 export 各司其职让事情能保持一致。
-
-```javascript
-// bad
-// filename es6.js
-export { es6 as default } from './airbnbStyleGuide'
-
-// good
-// filename es6.js
-import { es6 } from './AirbnbStyleGuide'
-export default es6
-```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="iterators-and-generators"></a>
-## Iterators and Generators
-
-- [11.1](#11.1) <a name='11.1'></a> 不要使用 iterators。使用高阶函数例如 `map()` 和 `reduce()` 替代 `for-of`。
-
-  > 为什么？这加强了我们不变的规则。处理纯函数的回调值更易读，这比它带来的副作用更重要。
-
-```javascript
-const numbers = [1, 2, 3, 4, 5]
-
-// bad
-let sum = 0
-for (let num of numbers) {
-  sum += num
-}
-
-sum === 15
-
-// good
-let sum = 0
-numbers.forEach((num) => sum += num)
-sum === 15
-
-// best (use the functional force)
-const sum = numbers.reduce((total, num) => total + num, 0)
-sum === 15
-```
-
-- [11.2](#11.2) <a name='11.2'></a> 现在还不要使用 generators。
-
-  > 为什么？因为它们现在还没法很好地编译到 ES5。 (译者注：目前(2016/03) Chrome 和 Node.js 的稳定版本都已支持 generators)
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="properties"></a>
-## 属性
-
-- [12.1](#12.1) <a name='12.1'></a> 使用 `.` 来访问对象的属性。
-
-  ```javascript
-  const luke = {
-    jedi: true,
-    age: 28
-  }
-
-  // bad
-  const isJedi = luke['jedi']
-
-  // good
-  const isJedi = luke.jedi
-  ```
-
-- [12.2](#12.2) <a name='12.2'></a> 当通过变量访问属性时使用中括号 `[]`。
-
-  ```javascript
-  const luke = {
-    jedi: true,
-    age: 28
-  };
-
-  function getProp(prop) {
-    return luke[prop]
-  }
-
-  const isJedi = getProp('jedi')
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="variables"></a>
-## 变量
-
-- [13.1](#13.1) <a name='13.1'></a> 一直使用 `const` 来声明变量，如果不这样做就会产生全局变量。我们需要避免全局命名空间的污染。[地球队长](http://www.wikiwand.com/en/Captain_Planet)已经警告过我们了。（译注：全局，global 亦有全球的意思。地球队长的责任是保卫地球环境，所以他警告我们不要造成「全球」污染。）
-
-  ```javascript
-  // bad
-  superPower = new SuperPower();
-
-  // good
-  const superPower = new SuperPower();
-  ```
-
-- [13.2](#13.2) <a name='13.2'></a> 使用 `const` 声明每一个变量。
-
-  > 为什么？增加新变量将变的更加容易，而且你永远不用再担心调换错 `;` 跟 `,`。
-
-  ```javascript
-  // bad
-  const items = getItems(),
-      goSportsTeam = true,
-      dragonball = 'z'
-
-  // bad
-  // (compare to above, and try to spot the mistake)
-  const items = getItems(),
-      goSportsTeam = true
-      dragonball = 'z'
-
-  // good
-  const items = getItems()
-  const goSportsTeam = true
-  const dragonball = 'z'
-  ```
-
-- [13.3](#13.3) <a name='13.3'></a> 将所有的 `const` 和 `let` 分组
-
-  > 为什么？当你需要把已赋值变量赋值给未赋值变量时非常有用。
-
-```javascript
-// bad
-let i, len, dragonball,
-    items = getItems(),
-    goSportsTeam = true
-
-// bad
-let i;
-const items = getItems()
-let dragonball
-const goSportsTeam = true
-let len
-
-// good
-const goSportsTeam = true
-const items = getItems()
-let dragonball
-let i
-let length
-```
-
-- [13.4](#13.4) <a name='13.4'></a> 在你需要的地方给变量赋值，但请把它们放在一个合理的位置。
-
-  > 为什么？`let` 和 `const` 是块级作用域而不是函数作用域。
-
-```javascript
-// good
-function() {
-  test();
-  console.log('doing stuff..');
-
-  //..other stuff..
-
-  const name = getName();
-
-  if (name === 'test') {
-    return false;
-  }
-
-  return name;
-}
-
-// bad - unnecessary function call
-function(hasName) {
-  const name = getName();
-
-  if (!hasName) {
-    return false;
-  }
-
-  this.setFirstName(name);
-
-  return true;
-}
-
-// good
-function(hasName) {
-  if (!hasName) {
-    return false;
-  }
-
-  const name = getName();
-  this.setFirstName(name);
-
-  return true;
-}
-```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="hoisting"></a>
-## Hoisting
-
-- [14.1](#14.1) <a name='14.1'></a> `var` 声明会被提升至该作用域的顶部，但它们赋值不会提升。`let` 和 `const` 被赋予了一种称为「[暂时性死区（Temporal Dead Zones, TDZ）](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#Temporal_dead_zone_and_errors_with_let)」的概念。这对于了解为什么 [type of 不再安全](http://es-discourse.com/t/why-typeof-is-no-longer-safe/15)相当重要。
-
-  ```javascript
-  // 我们知道这样运行不了 
-  // （假设 notDefined 不是全局变量）
-  function example() {
-    console.log(notDefined) // => throws a ReferenceError
-  }
-
-  // 由于变量提升的原因，
-  // 在引用变量后再声明变量是可以运行的。
-  // 注：变量的赋值 `true` 不会被提升。
-  function example() {
-    console.log(declaredButNotAssigned) // => undefined
-    var declaredButNotAssigned = true
-  }
-
-  // 编译器会把函数声明提升到作用域的顶层，
-  // 这意味着我们的例子可以改写成这样：
-  function example() {
-    let declaredButNotAssigned
-    console.log(declaredButNotAssigned) // => undefined
-    declaredButNotAssigned = true
-  }
-
-  // 使用 const 和 let
-  function example() {
-    console.log(declaredButNotAssigned) // => throws a ReferenceError
-    console.log(typeof declaredButNotAssigned) // => throws a ReferenceError
-    const declaredButNotAssigned = true
-  }
-  ```
-
-- [14.2](#14.2) <a name='14.2'></a> 匿名函数表达式的变量名会被提升，但函数内容并不会。
-
-  ```javascript
-  function example() {
-    console.log(anonymous) // => undefined
-
-    anonymous() // => TypeError anonymous is not a function
-
-    var anonymous = function() {
-      console.log('anonymous function expression')
-    }
-  }
-  ```
-
-- [14.3](#14.3) <a name='14.3'></a> 命名的函数表达式的变量名会被提升，但函数名和函数函数内容并不会。
-
-  ```javascript
-  function example() {
-    console.log(named) // => undefined
-    named() // => TypeError named is not a function
-    superPower() // => ReferenceError superPower is not defined
-    var named = function superPower() {
-      console.log('Flying');
-    };
-  }
-
-  // the same is true when the function name
-  // is the same as the variable name.
-  function example() {
-    console.log(named); // => undefined
-    named(); // => TypeError named is not a function
-    var named = function named() {
-      console.log('named');
-    }
-  }
-  ```
-
-- [14.4](#14.4) <a name='14.4'></a> 函数声明的名称和函数体都会被提升。
-
-  ```javascript
-  function example() {
-    superPower(); // => Flying
-    
-    function superPower() {
-      console.log('Flying')
-    }
-  }
-  ```
-
-- 想了解更多信息，参考 [Ben Cherry](http://www.adequatelygood.com/) 的 [JavaScript Scoping & Hoisting](http://www.adequatelygood.com/2010/2/JavaScript-Scoping-and-Hoisting)。
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="comparison-operators--equality"></a>
-## 比较运算符 & 等号
-
-- [15.1](#15.1) <a name='15.1'></a> 优先使用 `===` 和 `!==` 而不是 `==` 和 `!=`.
-- [15.2](#15.2) <a name='15.2'></a> 条件表达式例如 `if` 语句通过抽象方法 `ToBoolean` 强制计算它们的表达式并且总是遵守下面的规则：
-
-  + **对象** 被计算为 **true**
-  + **Undefined** 被计算为 **false**
-  + **Null** 被计算为 **false**
-  + **布尔值** 被计算为 **布尔的值**
-  + **数字** 如果是 **+0、-0、或 NaN** 被计算为 **false**, 否则为 **true**
-  + **字符串** 如果是空字符串 `''` 被计算为 **false**，否则为 **true**
-
-  ```javascript
-  if ([0]) {
-    // true
-    // An array is an object, objects evaluate to true
-  }
-  ```
-
-- [15.3](#15.3) <a name='15.3'></a> 使用简写。
-
-  ```javascript
-  // bad
-  if (name !== '') {
-    // ...stuff...
-  }
-
-  // good
-  if (name) {
-    // ...stuff...
-  }
-
-  // bad
-  if (collection.length > 0) {
-    // ...stuff...
-  }
-
-  // good
-  if (collection.length) {
-    // ...stuff...
-  }
-  ```
-
-- [15.4](#15.4) <a name='15.4'></a> 想了解更多信息，参考 Angus Croll 的 [Truth Equality and JavaScript](http://javascriptweblog.wordpress.com/2011/02/07/truth-equality-and-javascript/#more-2108)。
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="blocks"></a>
-## 代码块
-
-- [16.1](#16.1) <a name='16.1'></a> 使用大括号包裹所有的多行代码块。
-
-  ```javascript
-  // bad
-  if (test)
-    return false;
-
-  // good
-  if (test) return false;
-
-  // good
-  if (test) {
-    return false;
-  }
-
-  // bad
-  function() { return false; }
-
-  // good
-  function() {
-    return false;
-  }
-  ```
-
-- [16.2](#16.2) <a name='16.2'></a> 如果通过 `if` 和 `else` 使用多行代码块，把 `else` 放在 `if` 代码块关闭括号的同一行。
-
-  ```javascript
-  // bad
-  if (test) {
-    thing1();
-    thing2();
-  }
-  else {
-    thing3();
-  }
-
-  // good
-  if (test) {
-    thing1();
-    thing2();
-  } else {
-    thing3();
-  }
-  ```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="comments"></a>
-## 注释
-
-- [17.1](#17.1) <a name='17.1'></a> 使用 `/** ... */` 作为多行注释。包含描述、指定所有参数和返回值的类型和值。
-
-  ```javascript
-  // bad
-  // make() returns a new element
-  // based on the passed in tag name
-  //
-  // @param {String} tag
-  // @return {Element} element
-  function make(tag) {
-    // ...stuff...
-    return element;
-  }
-
-  // good
-  /**
-   * make() returns a new element
-   * based on the passed in tag name
-   *
-   * @param {String} tag
-   * @return {Element} element
-   */
-  function make(tag) {
-    // ...stuff...
-    return element;
-  }
-  ```
-
-- [17.2](#17.2) <a name='17.2'></a> 使用 `//` 作为单行注释。在评论对象上面另起一行使用单行注释。在注释前插入空行。
-
-  ```javascript
-  // bad
-  const active = true  // is current tab
-
-  // good
-  // is current tab
-  const active = true
-
-  // bad
-  function getType() {
-    console.log('fetching type...');
-    // set the default type to 'no type'
-    const type = this._type || 'no type'
-    return type;
-  }
-
-  // good
-  function getType() {
-    console.log('fetching type...');
-
-    // set the default type to 'no type'
-    const type = this._type || 'no type';
-
-    return type;
-  }
-  ```
-
-- [17.3](#17.3) <a name='17.3'></a> 给注释增加 `FIXME` 或 `TODO` 的前缀可以帮助其他开发者快速了解这是一个需要复查的问题，或是给需要实现的功能提供一个解决方式。这将有别于常见的注释，因为它们是可操作的。使用 `FIXME -- need to figure this out` 或者 `TODO -- need to implement`。
-
-- [17.4](#17.4) <a name='17.4'></a> 使用 `// FIXME`: 标注问题。
-
-  ```javascript
-  class Calculator {
-    constructor() {
-      // FIXME: shouldn't use a global here
-      total = 0;
-    }
-  }
-  ```
-
-- [17.5](#17.5) <a name='17.5'></a> 使用 `// TODO`: 标注问题的解决方式。
-
-  ```javascript
-  class Calculator {
-    constructor() {
-      // TODO: total should be configurable by an options param
-      this.total = 0;
-    }
-  }
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="whitespace"></a>
-## 空白
-
-- [18.1](#18.1) <a name='18.1'></a> 使用 2 个空格作为缩进。
-
-  ```javascript
-  // bad
-  function() {
-  ∙∙∙∙const name
-  }
-
-  // bad
-  function() {
-  ∙const name
-  }
-
-  // good
-  function() {
-  ∙∙const name
-  }
-  ```
-
-- [18.2](#18.2) <a name='18.2'></a> 在花括号前放一个空格。
-
-  ```javascript
-  // bad
-  function test(){
-    console.log('test')
-  }
-
-  // good
-  function test() {
-    console.log('test')
-  }
-
-  // bad
-  dog.set('attr',{
-    age: '1 year',
-    breed: 'Bernese Mountain Dog'
-  })
-
-  // good
-  dog.set('attr', {
-    age: '1 year',
-    breed: 'Bernese Mountain Dog'
-  })
-  ```
-
-- [18.3](#18.3) <a name='18.3'></a> 在控制语句（`if`、`while` 等）的小括号前放一个空格。在函数调用及声明中，不在函数的参数列表前加空格。
-
-  ```javascript
-  // bad
-  if(isJedi) {
-    fight ()
-  }
-
-  // good
-  if (isJedi) {
-    fight()
-  }
-
-  // bad
-  function fight () {
-    console.log ('Swooosh!')
-  }
-
-  // good
-  function fight() {
-    console.log('Swooosh!')
-  }
-  ```
-
-- [18.4](#18.4) <a name='18.4'></a> 使用空格把运算符隔开。
-
-  ```javascript
-  // bad
-  const x=y+5
-
-  // good
-  const x = y + 5
-  ```
-
-- [18.5](#18.5) <a name='18.5'></a> 在文件末尾插入一个空行。
-
-  ```javascript
-  // bad
-  (function(global) {
-    // ...stuff...
-  })(this)
-  ```
-
-  ```javascript
-  // bad
-  (function(global) {
-    // ...stuff...
-  })(this)↵
-  ↵
-  ```
-
-  ```javascript
-  // good
-  (function(global) {
-    // ...stuff...
-  })(this)↵
-  ```
-
-- [18.5](#18.5) <a name='18.5'></a> 在使用长方法链时进行缩进。使用前面的点 `.` 强调这是方法调用而不是新语句。
-
-  ```javascript
-  // bad
-  $('#items').find('.selected').highlight().end().find('.open').updateCount()
-
-  // bad
-  $('#items').
-    find('.selected').
-      highlight().
-      end().
-    find('.open').
-      updateCount()
-
-  // good
-  $('#items')
-    .find('.selected')
-      .highlight()
-      .end()
-    .find('.open')
-      .updateCount()
-
-  // bad
-  const leds = stage.selectAll('.led').data(data).enter().append('svg:svg').class('led', true)
-      .attr('width', (radius + margin) * 2).append('svg:g')
-      .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
-      .call(tron.led);
-
-  // good
-  const leds = stage.selectAll('.led')
-      .data(data)
-    .enter().append('svg:svg')
-      .classed('led', true)
-      .attr('width', (radius + margin) * 2)
-    .append('svg:g')
-      .attr('transform', 'translate(' + (radius + margin) + ',' + (radius + margin) + ')')
-      .call(tron.led);
-  ```
-
-- [18.6](#18.6) <a name='18.6'></a> 在块末和新语句前插入空行。
-
-  ```javascript
-  // bad
-  if (foo) {
-    return bar
-  }
-  return baz
-
-  // good
-  if (foo) {
-    return bar
-  }
-
-  return baz
-
-  // bad
-  const obj = {
-    foo() {
-    },
-    bar() {
-    },
-  };
-  return obj;
-
-  // good
-  const obj = {
-    foo() {
-    },
-
-    bar() {
-    },
-  };
-
-  return obj;
-  ```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="commas"></a>
-## 逗号
-
-- [19.1](#19.1) <a name='19.1'></a> 行首逗号：**不需要**。
-
-  ```javascript
-  // bad
-  const story = [
-      once
-    , upon
-    , aTime
-  ];
-
-  // good
-  const story = [
-    once,
-    upon,
-    aTime
-  ]
-
-  // bad
-  const hero = {
-      firstName: 'Ada'
-    , lastName: 'Lovelace'
-    , birthYear: 1815
-    , superPower: 'computers'
-  };
-
-  // good
-  const hero = {
-    firstName: 'Ada',
-    lastName: 'Lovelace',
-    birthYear: 1815,
-    superPower: 'computers'
-  };
-  ```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="type-casting--coercion"></a>
-## 类型转换
-
-- [21.1](#21.1) <a name='21.1'></a> 在语句开始时执行类型转换。
-- [21.2](#21.2) <a name='21.2'></a> 字符串：
-
-  ```javascript
-  //  => this.reviewScore = 9;
-
-  // bad
-  const totalScore = this.reviewScore + '';
-
-  // good
-  const totalScore = String(this.reviewScore);
-  ```
-
-- [21.3](#21.3) <a name='21.3'></a> 对数字使用 `parseInt` 转换，并带上类型转换的基数。
-
-  ```javascript
-  const inputValue = '4';
-
-  // bad
-  const val = new Number(inputValue);
-
-  // bad
-  const val = +inputValue;
-
-  // bad
-  const val = inputValue >> 0;
-
-  // bad
-  const val = parseInt(inputValue);
-
-  // good
-  const val = Number(inputValue);
-
-  // good
-  const val = parseInt(inputValue, 10);
-  ```
-
-- [21.4](#21.4) <a name='21.4'></a> 布尔:
-
-  ```javascript
-  const age = 0;
-
-  // bad
-  const hasAge = new Boolean(age);
-
-  // good
-  const hasAge = Boolean(age);
-
-  // good
-  const hasAge = !!age;
-  ```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="naming-conventions"></a>
-## 命名规则
-
-- [22.1](#22.1) <a name='22.1'></a> 避免单字母命名。命名应具备描述性。
-
-  ```javascript
-  // bad
-  function q() {
-    // ...stuff...
-  }
-
-  // good
-  function query() {
-    // ..stuff..
-  }
-  ```
-
-- [22.2](#22.2) <a name='22.2'></a> 使用驼峰式命名对象、函数和实例。
-
-  ```javascript
-  // bad
-  const OBJEcttsssss = {};
-  const this_is_my_object = {};
-  function c() {}
-
-  // good
-  const thisIsMyObject = {};
-  function thisIsMyFunction() {}
-  ```
-
-- [22.3](#22.3) <a name='22.3'></a> 使用帕斯卡式命名构造函数或类。
-
-  ```javascript
-  // bad
-  function user(options) {
-    this.name = options.name;
-  }
-
-  const bad = new user({
-    name: 'nope',
-  });
-
-  // good
-  class User {
-    constructor(options) {
-      this.name = options.name;
-    }
-  }
-
-  const good = new User({
-    name: 'yup',
-  });
-  ```
-
-- [22.4](#22.4) <a name='22.4'></a> 使用下划线 `_` 开头命名私有属性。
-
-  ```javascript
-  // bad
-  this.__firstName__ = 'Panda';
-  this.firstName_ = 'Panda';
-
-  // good
-  this._firstName = 'Panda';
-  ```
-
-- [22.5](#22.5) <a name='22.5'></a> 别保存 `this` 的引用。使用箭头函数或 Function#bind。
-
-  ```javascript
-  // bad
-  function foo() {
-    const self = this;
-    return function() {
-      console.log(self);
-    };
-  }
-
-  // bad
-  function foo() {
-    const that = this;
-    return function() {
-      console.log(that);
-    };
-  }
-
-  // good
-  function foo() {
-    return () => {
-      console.log(this);
-    };
-  }
-  ```
-
-- [22.6](#22.6) <a name='22.6'></a> 如果你的文件只输出一个类，那你的文件名必须和类名完全保持一致。
-
-  ```javascript
-  // file contents
-  class CheckBox {
-    // ...
-  }
-  export default CheckBox;
-
-  // in some other file
-  // bad
-  import CheckBox from './checkBox';
-
-  // bad
-  import CheckBox from './check_box';
-
-  // good
-  import CheckBox from './CheckBox';
-  ```
-
-- [22.7](#22.7) <a name='22.7'></a> 当你导出默认的函数时使用驼峰式命名。你的文件名必须和函数名完全保持一致。
-
-  ```javascript
-  function makeStyleGuide() {
-  }
-
-  export default makeStyleGuide;
-  ```
-
-- [22.8](#22.8) <a name='22.8'></a> 当你导出单例、函数库、空对象时使用帕斯卡式命名。
-
-  ```javascript
-  const AirbnbStyleGuide = {
-    es6: {
-    }
-  };
-
-  export default AirbnbStyleGuide;
-  ```
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="accessors"></a>
-## 存取器
-
-- [23.1](#23.1) <a name='23.1'></a> 属性的存取函数不是必须的。
-- [23.2](#23.2) <a name='23.2'></a> 如果你需要存取函数时使用 `getVal()` 和 `setVal('hello')`。
-
-  ```javascript
-  // bad
-  dragon.age();
-
-  // good
-  dragon.getAge();
-
-  // bad
-  dragon.age(25);
-
-  // good
-  dragon.setAge(25);
-  ```
-
-- [23.3](#23.3) <a name='23.3'></a> 如果属性是布尔值，使用 `isVal()` 或 `hasVal()`。
-
-  ```javascript
-  // bad
-  if (!dragon.age()) {
-    return false;
-  }
-
-  // good
-  if (!dragon.hasAge()) {
-    return false;
-  }
-  ```
-
-- [23.4](#23.4) <a name='23.4'></a> 创建 `get()` 和 `set()` 函数是可以的，但要保持一致。
-
-  ```javascript
-  class Jedi {
-    constructor(options = {}) {
-      const lightsaber = options.lightsaber || 'blue';
-      this.set('lightsaber', lightsaber);
-    }
-
-    set(key, val) {
-      this[key] = val;
-    }
-
-    get(key) {
-      return this[key];
-    }
-  }
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="events"></a>
-## 事件
-
-- [24.1](#24.1) <a name='24.1'></a> 当给事件附加数据时（无论是 DOM 事件还是私有事件），传入一个哈希而不是原始值。这样可以让后面的贡献者增加更多数据到事件数据而无需找出并更新事件的每一个处理器。例如，不好的写法：
-
-  ```javascript
-  // bad
-  $(this).trigger('listingUpdated', listing.id);
-
-  ...
-
-  $(this).on('listingUpdated', function(e, listingId) {
-    // do something with listingId
-  });
-  ```
-
-  更好的写法：
-
-  ```javascript
-  // good
-  $(this).trigger('listingUpdated', { listingId : listing.id });
-
-  ...
-
-  $(this).on('listingUpdated', function(e, data) {
-    // do something with data.listingId
-  });
-  ```
-
-  **[⬆ 返回目录](#table-of-contents)**
-
-
-## jQuery
-
-- [25.1](#25.1) <a name='25.1'></a> 使用 `$` 作为存储 jQuery 对象的变量名前缀。
-
-  ```javascript
-  // bad
-  const sidebar = $('.sidebar')
-
-  // good
-  const $sidebar = $('.sidebar')
-  ```
-
-- [25.2](#25.2) <a name='25.2'></a> 缓存 jQuery 查询。
-
-  ```javascript
-  // bad
-  function setSidebar() {
-    $('.sidebar').hide()
-    
-    // ...stuff...
-    
-    $('.sidebar').css({
-      'background-color': 'pink'
-    });
-  }
-
-  // good
-  function setSidebar() {
-    const $sidebar = $('.sidebar');
-    $sidebar.hide();
-
-    // ...stuff...
-
-    $sidebar.css({
-      'background-color': 'pink'
-    });
-  }
-  ```
-
-- [25.3](#25.3) <a name='25.3'></a> 对 DOM 查询使用层叠 `$('.sidebar ul')` 或 父元素 > 子元素 `$('.sidebar > ul')`。 [jsPerf](http://jsperf.com/jquery-find-vs-context-sel/16)
-- [25.4](#25.4) <a name='25.4'></a> 对有作用域的 jQuery 对象查询使用 `find`。
-
-  ```javascript
-  // bad
-  $('ul', '.sidebar').hide();
-
-  // bad
-  $('.sidebar').find('ul').hide();
-
-  // good
-  $('.sidebar ul').hide();
-
-  // good
-  $('.sidebar > ul').hide();
-
-  // good
-  $sidebar.find('ul').hide();
-  ```
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="ecmascript-5-compatibility"></a>
-## ECMAScript 5 兼容性
-
-- [26.1](#26.1) <a name='26.1'></a> 参考 [Kangax](https://twitter.com/kangax/) 的 ES5 [兼容性](http://kangax.github.com/es5-compat-table/).
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="ecmascript-6-styles"></a>
-## ECMAScript 6 规范
-
-- [27.1](#27.1) <a name='27.1'></a> 以下是链接到 ES6 的各个特性的列表。
-
-1. [Arrow Functions](#arrow-functions)
-2. [Classes](#constructors)
-3. [Object Shorthand](#es6-object-shorthand)
-4. [Object Concise](#es6-object-concise)
-5. [Object Computed Properties](#es6-computed-properties)
-6. [Template Strings](#es6-template-literals)
-7. [Destructuring](#destructuring)
-8. [Default Parameters](#es6-default-parameters)
-9. [Rest](#es6-rest)
-10. [Array Spreads](#es6-array-spreads)
-11. [Let and Const](#references)
-12. [Iterators and Generators](#iterators-and-generators)
-13. [Modules](#modules)
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="testing"></a>
-## 性能
-
-- [On Layout & Web Performance](http://kellegous.com/j/2013/01/26/layout-performance/)
-- [String vs Array Concat](http://jsperf.com/string-vs-array-concat/2)
-- [Try/Catch Cost In a Loop](http://jsperf.com/try-catch-in-loop-cost)
-- [Bang Function](http://jsperf.com/bang-function)
-- [jQuery Find vs Context, Selector](http://jsperf.com/jquery-find-vs-context-sel/13)
-- [innerHTML vs textContent for script text](http://jsperf.com/innerhtml-vs-textcontent-for-script-text)
-- [Long String Concatenation](http://jsperf.com/ya-string-concat)
-- Loading...
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="resources"></a>
-## 资源
-
-**Learning ES6**
-
-- [Draft ECMA 2015 (ES6) Spec](https://people.mozilla.org/~jorendorff/es6-draft.html)
-- [ExploringJS](http://exploringjs.com/)
-- [ES6 Compatibility Table](https://kangax.github.io/compat-table/es6/)
-- [Comprehensive Overview of ES6 Features](http://es6-features.org/)
-
-**Read This**
-
-- [Annotated ECMAScript 5.1](http://es5.github.com/)
-
-**Tools**
-
-- Code Style Linters
-  + [ESlint](http://eslint.org/) - [Airbnb Style .eslintrc](https://github.com/airbnb/javascript/blob/master/linters/.eslintrc)
-  + [JSHint](http://www.jshint.com/) - [Airbnb Style .jshintrc](https://github.com/airbnb/javascript/blob/master/linters/jshintrc)
-  + [JSCS](https://github.com/jscs-dev/node-jscs) - [Airbnb Style Preset](https://github.com/jscs-dev/node-jscs/blob/master/presets/airbnb.json)
-
-**Other Styleguides**
-
-- [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml)
-- [jQuery Core Style Guidelines](http://docs.jquery.com/JQuery_Core_Style_Guidelines)
-- [Principles of Writing Consistent, Idiomatic JavaScript](https://github.com/rwldrn/idiomatic.js/)
-
-**Other Styles**
-
-- [Naming this in nested functions](https://gist.github.com/4135065) - Christian Johansen
-- [Conditional Callbacks](https://github.com/airbnb/javascript/issues/52) - Ross Allen
-- [Popular JavaScript Coding Conventions on Github](http://sideeffect.kr/popularconvention/#javascript) - JeongHoon Byun
-- [Multiple var statements in JavaScript, not superfluous](http://benalman.com/news/2012/05/multiple-var-statements-javascript/) - Ben Alman
-
-**Further Reading**
-
-- [Understanding JavaScript Closures](http://javascriptweblog.wordpress.com/2010/10/25/understanding-javascript-closures/) - Angus Croll
-- [Basic JavaScript for the impatient programmer](http://www.2ality.com/2013/06/basic-javascript.html) - Dr. Axel Rauschmayer
-- [You Might Not Need jQuery](http://youmightnotneedjquery.com/) - Zack Bloom & Adam Schwartz
-- [ES6 Features](https://github.com/lukehoban/es6features) - Luke Hoban
-- [Frontend Guidelines](https://github.com/bendc/frontend-guidelines) - Benjamin De Cock
-
-**Books**
-
-- [JavaScript: The Good Parts](http://www.amazon.com/JavaScript-Good-Parts-Douglas-Crockford/dp/0596517742) - Douglas Crockford
-- [JavaScript Patterns](http://www.amazon.com/JavaScript-Patterns-Stoyan-Stefanov/dp/0596806752) - Stoyan Stefanov
-- [Pro JavaScript Design Patterns](http://www.amazon.com/JavaScript-Design-Patterns-Recipes-Problem-Solution/dp/159059908X)  - Ross Harmes and Dustin Diaz
-- [High Performance Web Sites: Essential Knowledge for Front-End Engineers](http://www.amazon.com/High-Performance-Web-Sites-Essential/dp/0596529309) - Steve Souders
-- [Maintainable JavaScript](http://www.amazon.com/Maintainable-JavaScript-Nicholas-C-Zakas/dp/1449327680) - Nicholas C. Zakas
-- [JavaScript Web Applications](http://www.amazon.com/JavaScript-Web-Applications-Alex-MacCaw/dp/144930351X) - Alex MacCaw
-- [Pro JavaScript Techniques](http://www.amazon.com/Pro-JavaScript-Techniques-John-Resig/dp/1590597273) - John Resig
-- [Smashing Node.js: JavaScript Everywhere](http://www.amazon.com/Smashing-Node-js-JavaScript-Everywhere-Magazine/dp/1119962595) - Guillermo Rauch
-- [Secrets of the JavaScript Ninja](http://www.amazon.com/Secrets-JavaScript-Ninja-John-Resig/dp/193398869X) - John Resig and Bear Bibeault
-- [Human JavaScript](http://humanjavascript.com/) - Henrik Joreteg
-- [Superhero.js](http://superherojs.com/) - Kim Joar Bekkelund, Mads Mobæk, & Olav Bjorkoy
-- [JSBooks](http://jsbooks.revolunet.com/) - Julien Bouquillon
-- [Third Party JavaScript](http://manning.com/vinegar/) - Ben Vinegar and Anton Kovalyov
-- [Effective JavaScript: 68 Specific Ways to Harness the Power of JavaScript](http://amzn.com/0321812182) - David Herman
-- [Eloquent JavaScript](http://eloquentjavascript.net/) - Marijn Haverbeke
-
-**Blogs**
-
-- [DailyJS](http://dailyjs.com/)
-- [JavaScript Weekly](http://javascriptweekly.com/)
-- [JavaScript, JavaScript...](http://javascriptweblog.wordpress.com/)
-- [Bocoup Weblog](http://weblog.bocoup.com/)
-- [Adequately Good](http://www.adequatelygood.com/)
-- [NCZOnline](http://www.nczonline.net/)
-- [Perfection Kills](http://perfectionkills.com/)
-- [Ben Alman](http://benalman.com/)
-- [Dmitry Baranovskiy](http://dmitry.baranovskiy.com/)
-- [Dustin Diaz](http://dustindiaz.com/)
-- [nettuts](http://net.tutsplus.com/?s=javascript)
-
-**Podcasts**
-
-- [JavaScript Jabber](http://devchat.tv/js-jabber/)
-
-
-**[⬆ 返回目录](#table-of-contents)**
-
-<a name="in-the-wild"></a>
-
