@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+    	
+		if (true) {
+			// TDZ开始
+			tmp = 'abc'; // ReferenceError
+			console.log(tmp); // ReferenceError
+			let tmp; // TDZ结束
+			console.log(tmp); // undefined
+
+			tmp = 123;
+			console.log(tmp); // 123
+		}
+    </script>
+</head>
+<body>
+text
+</body>
+</html>
