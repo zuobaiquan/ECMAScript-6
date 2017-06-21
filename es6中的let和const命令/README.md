@@ -224,3 +224,29 @@ foo = {}; // TypeError: "foo" is read-only
 ```
 
 上面代码中，常量`foo`储存的是一个地址，这个地址指向一个对象。不可变的只是这个地址，即不能把`foo`指向另一个地址，但对象本身是可变的，所以依然可以为其添加新属性。
+
+  5.const本质
+
+const声明的常量只能在当前代码块有效。如果想设置跨模块的常量，可以采用下面的写法。
+
+```javascript
+// constant.js模块
+export const A=1;
+export const B=2;
+export const C=3;
+
+// test1.js模块
+import * as constants from './constant';
+console.log(constants.A); //1
+console.log(constants.B); //2
+
+// test2.js模块
+import { A , B } from './constant';
+console.log(A); //1
+console.log(B); //2
+```
+
+
+
+
+

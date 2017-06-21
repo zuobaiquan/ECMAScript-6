@@ -1,17 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script type="text/javascript">
-    	
-	 let a;
-	 a=12;
-	 console.log(a);
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+	    var week="Sunday";
+	    function f1(){
+	        console.log("星期："+week);
+	    }
+	    function f2(){
+	        //局部变量，只能给f2本身子级访问
+	        var week="Monday";
+	        f1();//该f1无论在任何地方访问，都只能访问到Sunday的信息
+	    }
+	    f2();//星期：Sunday
 
-    </script>
+
+	    var tempdata=new Date();
+	    function test(){
+	    	console.log(tempdata);
+	    }
+		test();
+
+		var tmp = new Date();
+
+		function fff() {
+		  console.log(tmp);
+		  // if (false) {
+		  //   var tmp = 'hello world';
+		  // }
+		}
+		fff(); // undefined
+
+		const foo={};
+		foo.name='test';
+		console.log(foo);	
+
+
+  </script>
 </head>
 <body>
-text
+	
 </body>
 </html>
