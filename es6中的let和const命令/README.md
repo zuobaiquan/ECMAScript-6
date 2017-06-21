@@ -17,7 +17,7 @@ let a=5;	//错的
 
 ##### c).let不像var那样会发生”变量提升”现象
 
-​	所以，变量一定要在声明后使用，否则报错
+​	所以，变量一定**要先声明后使用**，否则报错
 
 ```javascript
 console.log(foo);//Uncaught ReferenceError: foo is not defined
@@ -101,6 +101,15 @@ function f() {
 }
 f(); // undefined
 //说明：函数f执行，变量提升，导致内层的tmp变量覆盖了外层的tmp变量。
+
+//如果部分代码
+var tmp = new Date();
+function f() {
+  console.log(tmp);
+}
+f(); //Wed Jun 21 2017 20:35:04 GMT+0800 (中国标准时间)
+
+
 //更多关于变量提升看https://github.com/zuobaiquan/javascript/blob/master/js%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87.md
 ```
 
@@ -119,11 +128,7 @@ console.log(i); // 5
 
 
 
-
-
-
-
-
+ 
 
 ```html
 <head>
