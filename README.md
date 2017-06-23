@@ -452,41 +452,43 @@ Promise就是一个对象，用来传递异步操作的数据(消息)
 			—> Resolve(完成、fullFilled)
 			—> Rejected(拒绝、失败)
 使用：
-	var p1=new Promise(function(resolve,reject){
-		//resolve  成功了
-		//reject    失败了
-	    	});
-	
-	var p1=new Promise(function(resolve,reject){
-		if(异步处理成功了){
-			resolve(成功数据)
-		}else{
-			reject(失败原因)
-		}
-	    	});
-	
-	p1.then(成功(resolve),失败(reject))	√
-	--------------------------------------------
-	
-	p1.catch——用来捕获错误
-	
-	--------------------------------------------
-	Promise.all——全部，用于将多个promise对象，组合，包装成一个全新的promise实例
-		Promise.all([p1,p2,p3...]);
-	
-		所有的promise对象，都正确，才走成功
-		否则，只要有一个错误，是失败了
-	--------------------------------------------
-	Promise.race——返回也是一个promise对象
-		最先能执行的promise结果， 哪个最快，用哪个
-	--------------------------------------------
-	Promise.reject()	——生成错误的一个promise
-	
-	--------------------------------------------
-	Promise.resolve()	——生成一个成功的promise对象
-		语法：
-			Promise.resolve(value)
-			Promise.resolve(promise)
+```javascript
+var p1=new Promise(function(resolve,reject){
+	//resolve  成功了
+	//reject    失败了
+    	});
+
+var p1=new Promise(function(resolve,reject){
+	if(异步处理成功了){
+		resolve(成功数据)
+	}else{
+		reject(失败原因)
+	}
+    	});
+
+p1.then(成功(resolve),失败(reject))	√
+--------------------------------------------
+
+p1.catch——用来捕获错误
+
+--------------------------------------------
+Promise.all——全部，用于将多个promise对象，组合，包装成一个全新的promise实例
+	Promise.all([p1,p2,p3...]);
+
+	所有的promise对象，都正确，才走成功
+	否则，只要有一个错误，是失败了
+--------------------------------------------
+Promise.race——返回也是一个promise对象
+	最先能执行的promise结果， 哪个最快，用哪个
+--------------------------------------------
+Promise.reject()	——生成错误的一个promise
+
+--------------------------------------------
+Promise.resolve()	——生成一个成功的promise对象
+	语法：
+		Promise.resolve(value)
+		Promise.resolve(promise)
+```
 简单的实例
 
 ```javascript
