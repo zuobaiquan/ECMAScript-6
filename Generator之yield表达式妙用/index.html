@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="index.css">
+</head>
+<body>
+<div id="box">
+	<table>
+		<tr>
+			<td>序号</td>
+			<td>标题</td>
+			<td>截止时间</td>
+			<td>操作</td>
+		</tr>
+		<tr v-for="(item, key, index) in qsList">
+			<td>{{ item.id }}</td>
+			<td>{{ item.title }}</td>
+			<td>{{ item.time }}</td>
+			<td><button @click="iterator = delItem(item.id); iterator.next()">删除</button></td>
+		</tr>
+	</table>
+	<div class="shadow" v-if="showDialog">
+		<div class="del-dialog">
+			<header>
+				<span>提示</span>
+				<span class="close-btn" @click="showDialog = false">X</span>
+			</header>
+			<p>{{info}}</p>
+			<div class="btn-box">
+				<button class="yes" @click="iterator.next();">确定</button>
+				<button @click="showDialog = false">取消</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<script type="text/javascript" src="vue.min.js"></script>
+<script type="text/javascript">
+	window.onload=function(){
+		var vm = new Vue({
+			el: "#box",
+			data() {
+				return {
+				qsList: [
+					{id:1,title:'第一份问卷','time':'2017-08-20'},
+					{id:2,title:'第二份问卷','time':'2017-08-20'},
+					{id:3,title:'第三份问卷','time':'2017-08-20'}
+				],
+				showDialog: false,
+				iterator: {},
+				}
+			},
+			methods: {
+				showDialogMsg(info) {
+					this.showDialog = true;
+					this.info = info;
+				},
+				*delItem(num) {
+					yield this.showDialogMsg('确认要删除此问卷');
+					yield (() => {
+						let index = 0;
+						for (let length = this.qsList.length; index < length; index++) {
+							if (this.qsList[index].id === num) break;
+						}
+						this.qsList.splice(index, 1);
+						this.showDialog = false;
+					})();
+				}
+			}
+		})
+	}
+</script>
+</html>

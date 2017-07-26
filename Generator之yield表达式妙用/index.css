@@ -1,0 +1,93 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+html{
+  height: 100%;
+  font-size: 62.5%;
+}
+body {
+  height: 100%;
+  font-size: 1.4rem;
+}
+#box {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-color: #efefef;
+}
+table tr{
+  text-align: center;
+}
+table tr td{
+  padding:0 20px;
+}
+
+.shadow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(85, 85, 85, 0.7);
+}
+.shadow .del-dialog {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 40rem;
+    height: 20rem;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: .5rem;
+    box-shadow: 0 0 5px #555;
+    background-color: #fff;
+}
+.shadow header{
+  height: 5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  line-height: 5rem;
+  border-radius: .5rem;
+  background-color: #f7f7f7;
+}
+
+.shadow .close-btn {
+  position: absolute;
+  right: 3rem;
+  color: #bbb;
+  cursor: pointer;
+}
+.shadow .close-btn:hover {
+  color: #ee7419;
+}
+.del-dialog p {
+  margin-top: 3rem;
+  margin-left: 3rem;
+}
+button{
+  width: 7rem;
+  height: 2.5rem;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  line-height: 100%;
+  color: #777;
+  border: 1px solid #555;
+  border-radius: .2rem;
+  background-color: #fff;
+  cursor: pointer;
+}
+.btn-box {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
+  text-align: center;
+  line-height: 6rem;
+}
+.yes {
+  margin-right: 1rem;
+  color: #fff;
+  background-color: #ee7419;
+  border: 1px solid #ee7419;
+}
+.yes:hover{
+  box-shadow: 0 0 5px #ee7419;
+}
