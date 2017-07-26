@@ -59,7 +59,7 @@
 					this.info = info;
 				},
 				*delItem(num) {
-					yield this.showDialogMsg('确认要删除此问卷');
+					yield this.showDialogMsg('确认要删除此项吗');
 					yield (() => {
 						let index = 0;
 						for (let length = this.qsList.length; index < length; index++) {
