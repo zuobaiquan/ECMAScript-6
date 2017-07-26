@@ -14,8 +14,9 @@
 			<td>截止时间</td>
 			<td>操作</td>
 		</tr>
-		<tr v-for="(item, key, index) in qsList">
-			<td>{{ item.id }}</td>
+		<tr v-for="(item, index) in qsList">
+
+			<td>{{ index+1 }}</td>
 			<td>{{ item.title }}</td>
 			<td>{{ item.time }}</td>
 			<td><button @click="iterator = delItem(item.id); iterator.next()">删除</button></td>
