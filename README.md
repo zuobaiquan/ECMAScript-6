@@ -57,8 +57,16 @@
     //每一次循环，变量i的值都会发生改变，而循环内被赋给数组a的function在运行时
     //会通过闭包读到这同一个变量i，导致最后输出的是最后一轮的i的值，也就是10
     //改进：封闭空间
-//    window.onload=function(){
-//        var btn=document.getElementsByTagName("input");
+ // window.onload=function(){
+ //    var btn=document.getElementsByTagName("input");
+ //    for(var i=0;i<btn.length;i++){
+ //       btn[i].onclick=(function(){
+ //           alert(i);
+ //       })()
+ //    }
+ // }
+//  window.onload=function(){
+//      var btn=document.getElementsByTagName("input");
 //        for(var i=0;i<btn.length;i++){
 //            (function(i){
 //                btn[i].onclick=function(){
@@ -66,16 +74,17 @@
 //                }
 //            })(i)
 //        }
-//    }
-      //改进，利用es新特性 let，，即把var变量换成 let即可
-      window.onload=function(){
-        var btn=document.getElementsByTagName("input");
-        for(let i=0;i<btn.length;i++){
-            btn[i].onclick=function(){
-                alert(i);
-            }
-        }
+//  }
+
+//改进，利用es新特性 let，，即把var变量换成 let即可
+window.onload=function(){
+  var btn=document.getElementsByTagName("input");
+  for(let i=0;i<btn.length;i++){
+      btn[i].onclick=function(){
+          alert(i);
       }
+  }
+}
     </script>
 </head>
 <body>
