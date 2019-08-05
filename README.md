@@ -97,7 +97,7 @@ window.onload=function(){
 ## 3.const——用来定义 常量
 
 	一旦赋值，以后再也修改不了了
-
+	
 	const a=12;
 	a=15	//报错
 	
@@ -512,3 +512,12 @@ p1.then(function(value){
   	alert('失败了');
 });
 ```
+
+
+
+
+
+如果觉得对你帮助，记得打赏哦。
+
+![591517660778_.pic](https://zuobaiquan.com/blogImg/CSS/pay.png)
+
