@@ -25,10 +25,11 @@
         for(var name in myJson){
             console.log(name); // a b c d
         }
-        //for of循环, 可以循环数组，但不能循环json
+        //for of循环, 可以循环数组，但不能循环json、对象
         // for(var name of myJson){
         //     console.log(name);//undefined is not a function
         // }
+        // rest参数搭配的变量是一个数组，该变量将多余的参数放入数组中
         function addNum(...value){
             sum=0;
             for(var v of value){
@@ -70,11 +71,11 @@
             console.log(name);
         }
         //只是循环key
-        for(var key of mymap.keys()){ 
+        for(var key of mymap.keys()){
             console.log(key);
         }
         //只是循环value
-        for(var val of mymap.values()){     
+        for(var val of mymap.values()){
             console.log(val);
         }
 

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  </body>
+  <script type="text/javascript">
+    // Object.assign 将所有可枚举属性的值从一个或多个源对象复制到目标对象。它将返回目标对象
+    let a={
+      name:'zuobaiquan',
+      age:20
+    }
+    let b={
+      name:'yuqin',
+      age:18
+    }
+    let c ={
+      name:'quanquan',
+      sex:'female'
+    }
+    console.log(Object.assign({},a,b)); // {name: "yuqin", age: 18}
+    console.log(Object.assign({},b,a)); // {name: "zuobaiquan", age: 20}
+    console.log(Object.assign({},b,a,c)); // {name: "quanquan", age: 20, sex: "female"}
+
+    //如果目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。  " 后面 " 的源对象的属性将类似地覆盖前面的源对象的属性。
+
+
+  </script>
+</html>
